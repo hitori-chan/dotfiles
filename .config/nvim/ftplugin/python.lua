@@ -1,1 +1,1 @@
-require('runner').f9('python %:S', 'Run current Python file')
+require("runner").f9("python %:S", "Run current Python file")

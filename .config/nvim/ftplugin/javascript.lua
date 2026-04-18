@@ -1,1 +1,1 @@
-require('runner').f9('node %:S', 'Run current JavaScript file')
+require("runner").f9("node %:S", "Run current JavaScript file")

@@ -1,3 +1,1 @@
-vim.pack.add({
-	"https://github.com/brianhuster/live-preview.nvim",
-})
+vim.pack.add({ "https://github.com/brianhuster/live-preview.nvim" })
