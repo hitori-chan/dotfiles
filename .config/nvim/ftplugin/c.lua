@@ -1,12 +1,8 @@
-local toggleterm = require('toggleterm')
-
+local cmd
 if vim.bo.filetype == 'c' then
-	cmd = 'gcc -Wall % -o %:r && ./%:r'
+	cmd = 'gcc -Wall %:S -o %:t:r:S && ./%:t:r:S'
 else
-	cmd = 'g++ -Wall % -o %:r && ./%:r'
+	cmd = 'g++ -Wall %:S -o %:t:r:S && ./%:t:r:S'
 end
 
-vim.keymap.set('n', '<F9>', function()
-	vim.cmd.write()
-	toggleterm.exec(vim.fn.expandcmd(cmd))
-end)
+require('runner').f9(cmd, 'Build and run current C/C++ file')

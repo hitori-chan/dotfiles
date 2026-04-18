@@ -1,6 +1,1 @@
-local toggleterm = require('toggleterm')
-
-vim.keymap.set('n', '<F9>', function()
-	vim.cmd.write()
-	toggleterm.exec(vim.fn.expandcmd('python %'))
-end)
+require('runner').f9('python %:S', 'Run current Python file')

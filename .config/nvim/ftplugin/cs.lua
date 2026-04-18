@@ -1,6 +1,4 @@
-local toggleterm = require('toggleterm')
-
-vim.keymap.set('n', '<F9>', function()
-	vim.cmd.write()
-	toggleterm.exec(vim.fn.expandcmd('mcs % && mono %:r.exe'))
-end)
+require('runner').f9(
+	'mcs %:S && mono %:r:S.exe',
+	'Build and run current C# file'
+)
