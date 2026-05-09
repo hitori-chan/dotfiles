@@ -1,37 +1,29 @@
 #!/bin/bash
+set -euo pipefail
 
 install_configs() {
-	sudo cp -r .sysconf/* /
-	rm -rf .sysconf
+	sudo cp -r .rootfs/* /
 	cp -r .[^.]* ~
 	mv ~/.git ~/.dotfiles
 	echo 'Configs installed'
 }
 
 change_acpi_events() {
-	FILE='/etc/systemd/logind.conf'
-
-
-	# Set power key to suspend
-	sudo sed -i '/^#HandlePowerKey=/s/poweroff/suspend/g' $FILE
-	sudo sed -i '/^#HandlePowerKey=/s/^#//g' $FILE
-
-	echo "ACPI suspend set"
+	sudo sed -i 's/^#\?HandlePowerKey=.*/HandlePowerKey=suspend/' /etc/systemd/logind.conf
+	echo "Power key suspend configured"
 }
 
 config_pacman() {
-	FILE='/etc/pacman.conf'
-
-	sudo sed -i '/^#\[multilib\]/,/^#Include/s/#//' $FILE
-	echo 'Multilib enabled'
-
-	sudo sed -i '/^#Color/s/#//g' $FILE
+	sudo sed -i '/^#Color/s/^#//' /etc/pacman.conf
 	echo 'Pacman color enabled'
+
+	sudo sed -i '/^#\[multilib\]/,/^#Include/s/^#//' /etc/pacman.conf
+	echo 'Multilib enabled'
 }
 
-disable_debug_option_makepkg() {
+disable_debug_makepkg() {
 	sudo sed -i '/^OPTIONS/s/ debug/ !debug/' /etc/makepkg.conf
-	echo 'Debug option makepkg disabled'
+	echo 'Debug makepkg disabled'
 }
 
 enable_zram() {
@@ -44,5 +36,5 @@ enable_zram() {
 install_configs
 change_acpi_events
 config_pacman
-disable_debug_option_makepkg
+disable_debug_makepkg
 enable_zram
