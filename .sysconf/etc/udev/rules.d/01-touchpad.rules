@@ -1,2 +1,0 @@
-SUBSYSTEM=="input", KERNEL=="mouse[0-9]*", ACTION=="add", ENV{DBUS_SESSION_BUS_ADDRESS}="address", RUN+="/usr/bin/su user -c '~/.local/bin/touchpad disable'"
-SUBSYSTEM=="input", KERNEL=="mouse[0-9]*", ACTION=="remove", ENV{DBUS_SESSION_BUS_ADDRESS}="address", RUN+="/usr/bin/su user -c '~/.local/bin/touchpad enable'"

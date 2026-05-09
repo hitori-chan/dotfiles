@@ -89,10 +89,4 @@ theme.layout_cornerse       = themes_path .. 'layouts/cornerse.png'
 -- }}}
 -- }}}
 
--- {{{ Function
-theme.get_random_waifu      = function()
-	return io.popen('find ' .. themes_path .. 'waifu/ -type f | shuf -n1'):read('*all'):sub(1, -2)
-end
--- }}}
-
 return theme

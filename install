@@ -8,14 +8,6 @@ install_configs() {
 	echo 'Configs installed'
 }
 
-install_touchpad_rules() {
-	FILE='/etc/udev/rules.d/01-touchpad.rules'
-
-	sudo sed -i "s/user/$USER/g" $FILE
-	sudo sed -i "s|address|$DBUS_SESSION_BUS_ADDRESS|g" $FILE # Error: DBUS_SESSION_BUS_ADDRESS is empty when running in chroot
-	echo 'Touchpad udev rules configured'
-}
-
 change_acpi_events() {
 	FILE='/etc/systemd/logind.conf'
 
@@ -50,7 +42,6 @@ enable_zram() {
 }
 
 install_configs
-install_touchpad_rules
 change_acpi_events
 config_pacman
 disable_debug_option_makepkg
