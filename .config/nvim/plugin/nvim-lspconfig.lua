@@ -17,3 +17,11 @@ vim.lsp.enable({
 	"ty",
 	"yamlls",
 })
+
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, {
+	desc = "Show diagnostic",
+})
+
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {
+	desc = "Diagnostic list",
+})
