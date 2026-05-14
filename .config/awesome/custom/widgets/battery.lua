@@ -1,5 +1,6 @@
 local awful = require("awful")
 local beautiful = require("beautiful")
+local gears = require("gears")
 local notify = require("custom.utils.notify").new()
 local wibox = require("wibox")
 
@@ -8,6 +9,7 @@ local M = {}
 local settings = {
 	low_interval = 300,
 	low_percent = 10,
+	update_interval = 30,
 }
 
 local state = {
@@ -19,6 +21,7 @@ local state = {
 
 local widgets = setmetatable({}, { __mode = "k" })
 local watcher_started = false
+local refresh_timer = nil
 local paths = {
 	battery_capacity = nil,
 	mains_online = nil,
@@ -136,6 +139,18 @@ local function refresh()
 	update_all()
 end
 
+local function start_refresh_timer()
+	if refresh_timer or settings.update_interval <= 0 then
+		return
+	end
+
+	refresh_timer = gears.timer({
+		timeout = settings.update_interval,
+		autostart = true,
+		callback = refresh,
+	})
+end
+
 local function start_watcher()
 	if watcher_started then
 		return
@@ -144,6 +159,7 @@ local function start_watcher()
 	watcher_started = true
 	discover_paths()
 	refresh()
+	start_refresh_timer()
 
 	awful.spawn.easy_async({ "pkill", "-u", os.getenv("USER"), "-x", "acpi_listen" }, function()
 		awful.spawn.with_line_callback("acpi_listen", {
@@ -160,6 +176,19 @@ function M.configure(opts)
 	opts = opts or {}
 	settings.low_interval = opts.low_interval or settings.low_interval
 	settings.low_percent = opts.low_percent or settings.low_percent
+
+	if opts.update_interval ~= nil then
+		settings.update_interval = opts.update_interval
+
+		if refresh_timer then
+			if settings.update_interval <= 0 then
+				refresh_timer:stop()
+			else
+				refresh_timer.timeout = settings.update_interval
+				refresh_timer:again()
+			end
+		end
+	end
 end
 
 function M.new(opts)
