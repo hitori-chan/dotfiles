@@ -61,13 +61,13 @@ function M.global(modkey)
 			{ description = "save selected window to file", group = "screenshot" }
 		),
 		awful.key(
-			{ "Mod1" },
+			{ modkey },
 			"Print",
 			screenshots.copy_screen,
 			{ description = "copy fullscreen to clipboard", group = "screenshot" }
 		),
 		awful.key(
-			{ "Control", "Mod1" },
+			{ "Control", modkey },
 			"Print",
 			screenshots.save_screen,
 			{ description = "save fullscreen to file", group = "screenshot" }
