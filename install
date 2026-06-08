@@ -1,16 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 set -euo pipefail
 
 install_configs() {
-	sudo cp -r .rootfs/* /
-	cp -r .[^.]* ~
+	sudo cp -r ./etc/* /etc/
+	cp -r .[!.]* ~
 	mv ~/.git ~/.dotfiles
 	echo 'Configs installed'
-}
-
-change_acpi_events() {
-	sudo sed -i 's/^#\?HandlePowerKey=.*/HandlePowerKey=suspend/' /etc/systemd/logind.conf
-	echo "Power key suspend configured"
 }
 
 config_pacman() {
@@ -21,20 +16,26 @@ config_pacman() {
 	echo 'Multilib enabled'
 }
 
-disable_debug_makepkg() {
+config_makepkg() {
 	sudo sed -i '/^OPTIONS/s/ debug/ !debug/' /etc/makepkg.conf
 	echo 'Debug makepkg disabled'
+
+	sudo sed -i '/^CFLAGS=/s/-march=x86-64 -mtune=generic/-march=native/' /etc/makepkg.conf
+	echo 'CFLAGS -march=native enabled'
+
+	sudo sed -i '/^RUSTFLAGS=/{/-C target-cpu=native/! s/"$/ -C target-cpu=native"/}' /etc/makepkg.conf.d/rust.conf
+	echo "RUSTFLAGS target-cpu=native enabled"
 }
 
 enable_zram() {
 	sudo pacman -Sy --needed zram-generator
 	sudo systemctl daemon-reload
 	sudo systemctl start systemd-zram-setup@zram0.service
-	echo 'Zram enabled'
+	echo 'zram enabled'
 }
 
 install_configs
-change_acpi_events
+
 config_pacman
-disable_debug_makepkg
+config_makepkg
 enable_zram

@@ -15,7 +15,3 @@ EDITOR=nvim
 
 # Fix man-pages weird characters
 GROFF_NO_SGR=1
-
-# GDK scaling for 4K
-GDK_SCALE=2
-GDK_DPI_SCALE=0.5
