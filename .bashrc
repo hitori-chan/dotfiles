@@ -126,9 +126,17 @@ export PATH
 # Color for man pages
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
+b64safe() {
+	until s=$(openssl rand -base64 ${1:-32} | tr -d '\n') && [[ $s != *[+/]* ]]; do :; done
+	echo $s
+}
+
 # Manage dotfiles
 if [ -d "$HOME/.dotfiles" ]; then
-	alias dotfile="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+	dotfile_cmd="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+	alias dotfile=$dotfile_cmd
+
+	$dotfile_cmd config status.showUntrackedFiles no
 
 	[ -r /usr/share/bash-completion/completions/git ] &&
 		source /usr/share/bash-completion/completions/git &&
