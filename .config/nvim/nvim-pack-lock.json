@@ -1,7 +1,7 @@
 {
   "plugins": {
     "blink.cmp": {
-      "rev": "3db7326f54b73df4789e0fd6274bedda33975fea",
+      "rev": "b02ac65634bdb8af2dcc4eb6c807c060e1e15ae6",
       "src": "https://github.com/saghen/blink.cmp"
     },
     "blink.lib": {
@@ -45,7 +45,7 @@
       "src": "https://github.com/windwp/nvim-autopairs"
     },
     "nvim-lspconfig": {
-      "rev": "229b79051b380377664edc4cbd534930154921a1",
+      "rev": "ed19590a3a9792901553c388d1aadafce012f80d",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-ts-autotag": {
@@ -67,6 +67,10 @@
     "vim-haproxy": {
       "rev": "1d93a843b4c567c2f499ba0c7ed60c435109ee53",
       "src": "https://github.com/Joorem/vim-haproxy"
+    },
+    "vim-nftables": {
+      "rev": "6aa6e601f80d0aa54ab4b8fa4ee14336439f0be0",
+      "src": "https://github.com/mephesto1337/vim-nftables"
     }
   }
 }
