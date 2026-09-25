@@ -1,12 +1,15 @@
 # dotfiles
-my personal dotfiles
+
+My personal dotfiles.
+
+Hypland plugins can be found at [hitori-chan/hyprland-plugins](https://github.com/hitori-chan/hyprland-plugins).
 
 ## Desktop
-![](images/preview.png)
+![](images/desktop.avif)
 
 ## Neovim
 
-![](images/neovim.png)
+![](images/neovim.avif)
 
-## Lock screen
-![](images/lockscreen.png)
+## Lock
+![](images/lock.avif)

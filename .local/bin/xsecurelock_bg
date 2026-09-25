@@ -1,3 +1,0 @@
-#!/bin/sh
-
-xloadimage -border '#000000' -fullscreen -windowid $XSCREENSAVER_WINDOW ~/pic/wallpaper/wallhaven-2ye9jm.jpg

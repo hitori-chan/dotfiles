@@ -1,0 +1,13 @@
+# Repo-wide editor + formatter defaults. shfmt reads this file when run
+# with no style flags, so `shfmt -w` reproduces the house style exactly.
+root = true
+
+[*]
+indent_style = tab
+insert_final_newline = true
+
+[*.sh]
+switch_case_indent = true
+
+[*.{yml,yaml,md}]
+indent_style = space

@@ -1,0 +1,4 @@
+# stylua — matches the config's established style: tabs, double quotes.
+column_width = 120
+indent_type = "Tabs"
+quote_style = "AutoPreferDouble"

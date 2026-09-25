@@ -1,27 +1,27 @@
 {
   "plugins": {
     "blink.cmp": {
-      "rev": "9dcb1f3a9164f10c8950a790aace576f2e89dc78",
+      "rev": "8219b58f1c11a2fb1644d3c7116c509fa8348ec0",
       "src": "https://github.com/saghen/blink.cmp"
     },
     "blink.lib": {
-      "rev": "5876dd95deeb70aadbe9f1c0b7117a135061cdac",
+      "rev": "fd9a48ebbe6ec30d5dfcc5b42c243941ccdca1aa",
       "src": "https://github.com/saghen/blink.lib"
     },
     "conform.nvim": {
-      "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
+      "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "fidget.nvim": {
-      "rev": "6f793b2bcd2d35e201c09520f698bb763220908a",
+      "rev": "9e0201673e08e997e7cf52afca5565c70bd117f3",
       "src": "https://github.com/j-hui/fidget.nvim"
     },
     "friendly-snippets": {
-      "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
+      "rev": "b4d01b0fdf3c9a549961c2f9ffe8dc09be166219",
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "fzf-lua": {
-      "rev": "ed4059deb9237f7f4cc8832ffef69779ffe2e265",
+      "rev": "13bb178a299f7493dd64427a58e61904c4b58ecb",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "gruvbox-material": {
@@ -33,19 +33,19 @@
       "src": "https://github.com/onsails/lspkind.nvim"
     },
     "mdpv.nvim": {
-      "rev": "b76e2cf15480beccd95df741a75a55dd2aafb3f2",
+      "rev": "1d9b95c8a60458934d4c697e0e98e735e0d5052a",
       "src": "https://github.com/hitori-chan/mdpv.nvim"
     },
     "mini.surround": {
-      "rev": "19b44c1bbe4eecaf191896b8bec657d5fdd549e4",
+      "rev": "33a2ebe5df8eb4751828fcba133e18ed0fbbdfab",
       "src": "https://github.com/nvim-mini/mini.surround"
     },
     "nvim-autopairs": {
-      "rev": "7b9923abad60b903ece7c52940e1321d39eccc79",
+      "rev": "430522f95fe4fb7c511ec64f8c1a90cc6a66c05c",
       "src": "https://github.com/windwp/nvim-autopairs"
     },
     "nvim-lspconfig": {
-      "rev": "d224a1920728ba129880efc700d4a0180ac4ecbb",
+      "rev": "046b1a797af1effe8e0474b9af9657a3761ec58a",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-ts-autotag": {
@@ -53,7 +53,7 @@
       "src": "https://github.com/windwp/nvim-ts-autotag"
     },
     "nvim-web-devicons": {
-      "rev": "dad71387de386a946b123079d0e53f23028f3abd",
+      "rev": "58447c1fca354bbf184425e4a8d01deecbd6f3c4",
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
     "plenary.nvim": {
