@@ -150,28 +150,6 @@ hl.bind(mod .. " + CTRL + N", function()
 	end
 end, { description = "restore minimized window (awesome)" })
 
-----------------
----- LAYOUT ----
-----------------
-
--- awesome's layout cycle, per workspace like its per-tag layouts. The
--- registry (hyprbar's layoutbox) holds one layout until more land; the
--- chords and the layoutbox clicks already cycle it.
-local function layout_inc(forward)
-	return function()
-		local bar = hl.plugin and hl.plugin.hyprbar
-		if not bar then
-			return
-		end
-		local fn = forward and bar.layout_next or bar.layout_prev
-		if fn then
-			fn()
-		end
-	end
-end
-hl.bind(mod .. " + Space", layout_inc(true), { description = "next layout (awesome chord)" })
-hl.bind(mod .. " + SHIFT + Space", layout_inc(false), { description = "previous layout (awesome chord)" })
-
 --------------------
 ---- WORKSPACES ----
 --------------------
