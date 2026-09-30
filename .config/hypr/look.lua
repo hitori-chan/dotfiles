@@ -26,7 +26,7 @@ hl.config({
 		allow_tearing = true, -- only `immediate`-ruled windows (rules.lua) tear
 
 		snap = {
-			enabled = false, -- hyprsnap is the magnet; two snap systems disagree
+			enabled = false, -- the plugin's drag-snap is the magnet; two snap systems disagree
 		},
 	},
 
@@ -48,34 +48,37 @@ hl.config({
 	-- them. The C++ defaults already ARE this theme — mapping them here keeps
 	-- theme.lua the single source.
 	plugin = {
-		hyprsnap = {
-			col_frame = argb(theme.focus), -- the armed snap zone's outline
-		},
-		hyprnotify = {
-			font_size = theme.font_px,
-			offset_y = theme.bar_px + 4, -- popups/center clear the bar
-		},
-		hyprbar = {
-			height = theme.bar_px,
-			font = theme.font,
-			font_size = theme.font_px,
-			terminal = "foot",
+		awesome = {
+			shell = {
+				height = theme.bar_px,
+				font = theme.font,
+				font_size = theme.font_px,
+				terminal = "foot",
 
-			col_bg = argb(theme.glass, theme.glass_alpha), -- the frosted band
-			col_fg = argb(theme.fg),
-			col_muted = argb(theme.muted),
-			col_focus = argb(theme.focus),
-			col_active = argb(theme.active),
-			col_active_bg = argb(theme.active_bg),
-			col_empty = argb(theme.empty),
-			col_urgent = argb(theme.urgent),
-			col_urgent_bg = argb(theme.urgent_bg),
-			col_square_sel = argb(theme.square_sel),
-			col_square_unsel = argb(theme.square_unsel),
-			col_frame = argb(theme.frame),
-			col_charging = argb(theme.charging),
-			col_low = argb(theme.low),
-			col_powersave = argb(theme.save),
+				col_bg = argb(theme.glass, theme.glass_alpha), -- the frosted band
+				col_fg = argb(theme.fg),
+				col_focus = argb(theme.focus),
+				col_active = argb(theme.active),
+				col_active_bg = argb(theme.active_bg),
+				col_empty = argb(theme.empty),
+				col_urgent = argb(theme.urgent),
+				col_urgent_bg = argb(theme.urgent_bg),
+				col_square_sel = argb(theme.square_sel),
+				col_square_unsel = argb(theme.square_unsel),
+				col_frame = argb(theme.frame),
+				col_charging = argb(theme.charging),
+				col_low = argb(theme.low),
+				col_powersave = argb(theme.save),
+			},
+
+			notify = {
+				font_size = theme.font_px,
+				offset_y = theme.bar_px + 4, -- popups/center clear the bar
+			},
+
+			windows = {
+				col_frame = argb(theme.focus), -- the armed snap zone's outline
+			},
 		},
 	},
 })

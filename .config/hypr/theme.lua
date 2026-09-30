@@ -1,9 +1,8 @@
 -- theme.lua — colors, fonts, shared metrics: the one source.
--- Hex is RRGGBB, no leading #. look.lua maps these onto the plugins, so a
--- re-theme stays a token swap here.
---
--- Hyprbar consumes these tokens. Hyprnotify keeps its independently approved
--- glass palette in common/theme.hpp, avoiding a second copy here.
+-- Hex is RRGGBB, no leading #. look.lua maps these onto the plugin's
+-- `plugin:awesome:*` config, so a re-theme stays a token swap here; the
+-- plugin's C++ defaults mirror this palette, so an empty config still
+-- looks right.
 
 local M = {
 	font = "Fira Code", -- shell UI, same face as the terminals

@@ -32,12 +32,12 @@ local scripts = "~/.config/hypr/scripts"
 hl.bind(mod .. " + Return", hl.dsp.exec_cmd(terminal), { description = "terminal" })
 hl.bind(mod .. " + E", hl.dsp.exec_cmd(fileManager), { description = "file manager" })
 
--- awesome's Mod+P menubar (key reference: hyprbar docs). Nil-guarded: dead
--- until the plugins install — there is no fallback launcher.
+-- awesome's Mod+P menubar (key reference: the plugin's README). Nil-guarded:
+-- dead until the plugin installs — there is no fallback launcher.
 hl.bind(mod .. " + P", function()
-	local bar = hl.plugin and hl.plugin.hyprbar
-	if bar and bar.menubar then
-		bar.menubar()
+	local a = hl.plugin and hl.plugin.awesome
+	if a and a.menubar then
+		a.menubar()
 	end
 end, { description = "app menubar (awesome chord)" })
 
@@ -55,12 +55,12 @@ hl.bind(
 )
 
 -- awesome's Mod+M is a PER-WINDOW flag (any number at once); native
--- maximize is one per workspace, so hyprmax provides the semantics
+-- maximize is one per workspace, so the plugin provides the semantics
 -- (nil-guarded native fallback).
 local function max_toggle()
-	local max = hl.plugin and hl.plugin.hyprmax
-	if max and max.toggle then
-		max.toggle()
+	local a = hl.plugin and hl.plugin.awesome
+	if a and a.maximize then
+		a.maximize()
 	else
 		hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
 	end
@@ -73,13 +73,13 @@ hl.bind(mod .. " + C", hl.dsp.window.center(), { description = "center window" }
 -- awesome's Mod+T keep-on-top; pin = floating window on top, on every workspace
 hl.bind(mod .. " + T", hl.dsp.window.pin(), { description = "pin on top (awesome keep-on-top)" })
 
--- awesome's Mod+J/K focus.byidx: hyprclick cycles in ARRIVAL order — the
+-- awesome's Mod+J/K focus.byidx: the plugin cycles in ARRIVAL order — the
 -- native cycle_next walks the z-order list, which raise-on-focus rotates,
 -- so cycling backwards bounced between the two newest raises.
 local function focus_byidx(forward)
 	return function()
-		local click = hl.plugin and hl.plugin.hyprclick
-		local fn = click and (forward and click.focus_next or click.focus_prev)
+		local a = hl.plugin and hl.plugin.awesome
+		local fn = a and (forward and a.focus_next or a.focus_prev)
 		if fn then
 			fn()
 		else
@@ -111,11 +111,11 @@ hl.bind(mod .. " + SHIFT + up", hl.dsp.window.move({ direction = "up" }))
 hl.bind(mod .. " + SHIFT + down", hl.dsp.window.move({ direction = "down" }))
 
 -- awesome's Mod+Tab: previous window ON THIS WORKSPACE — native
--- focus({ last }) is global history, hyprclick scopes it (nil-guarded).
+-- focus({ last }) is global history, the plugin scopes it (nil-guarded).
 hl.bind(mod .. " + Tab", function()
-	local click = hl.plugin and hl.plugin.hyprclick
-	if click and click.focus_prev_here then
-		click.focus_prev_here()
+	local a = hl.plugin and hl.plugin.awesome
+	if a and a.focus_prev_here then
+		a.focus_prev_here()
 	else
 		hl.dispatch(hl.dsp.focus({ last = true }))
 	end
@@ -132,21 +132,22 @@ hl.bind(mod .. " + CTRL + K", hl.dsp.focus({ monitor = "-1" }), { description = 
 hl.bind(mod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
--- awesome's client.minimized: hyprbar hides the window (unrendered, suspended,
--- its tiling slot freed) and keeps it in the tasklist drawn muted; Mod+N
+-- awesome's client.minimized: the plugin hides the window (unrendered,
+-- suspended, its tiling slot freed) and keeps it in the tasklist drawn
+-- muted; Mod+N
 -- minimizes the focused window, Mod+Ctrl+N (awful.client.restore) brings the
 -- last minimized one back in place. Click a task in the bar to toggle it too.
 -- Nil-guarded like the menubar bind: dead keys, not errors, until the plugin loads.
 hl.bind(mod .. " + N", function()
-	local bar = hl.plugin and hl.plugin.hyprbar
-	if bar and bar.minimize then
-		bar.minimize()
+	local a = hl.plugin and hl.plugin.awesome
+	if a and a.minimize then
+		a.minimize()
 	end
 end, { description = "minimize window (awesome)" })
 hl.bind(mod .. " + CTRL + N", function()
-	local bar = hl.plugin and hl.plugin.hyprbar
-	if bar and bar.restore then
-		bar.restore()
+	local a = hl.plugin and hl.plugin.awesome
+	if a and a.restore then
+		a.restore()
 	end
 end, { description = "restore minimized window (awesome)" })
 
@@ -177,13 +178,13 @@ hl.bind(mod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 ---- MEDIA / HARDWARE / SYSTEM ----
 -----------------------------------
 
--- hyprosd's value-bar cards (osd.sh retired). Nil-guarded like the
--- menubar bind: dead keys, not errors, until the plugins install.
+-- The plugin's value-bar cards are the OSD. Nil-guarded like the
+-- menubar bind: dead keys, not errors, until the plugin installs.
 local function osd(fn)
 	return function()
-		local o = hl.plugin and hl.plugin.hyprosd
-		if o and o[fn] then
-			o[fn]()
+		local a = hl.plugin and hl.plugin.awesome
+		if a and a[fn] then
+			a[fn]()
 		end
 	end
 end
@@ -197,9 +198,9 @@ hl.bind("XF86MonBrightnessDown", osd("brightness_down"), { locked = true, repeat
 -- DND: cards collect silently, the resume replays them newest-first.
 -- Nil-guarded like the rest.
 hl.bind(mod .. " + SHIFT + D", function()
-	local n = hl.plugin and hl.plugin.hyprnotify
-	if n and n.suspend then
-		n.suspend()
+	local a = hl.plugin and hl.plugin.awesome
+	if a and a.suspend then
+		a.suspend()
 	end
 end, { description = "notification DND" })
 
@@ -209,12 +210,12 @@ hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 hl.bind("XF86AudioStop", hl.dsp.exec_cmd("playerctl stop"), { locked = true })
 
--- hyprpad's manual flip. Nil-guarded like the menubar bind: dead key, not
--- an error, until the plugins install.
+-- The plugin's touchpad flip. Nil-guarded like the menubar bind: dead key,
+-- not an error, until the plugin installs.
 hl.bind("XF86TouchpadToggle", function()
-	local pad = hl.plugin and hl.plugin.hyprpad
-	if pad and pad.toggle then
-		pad.toggle()
+	local a = hl.plugin and hl.plugin.awesome
+	if a and a.touchpad_toggle then
+		a.touchpad_toggle()
 	end
 end, { locked = true })
 

@@ -6,29 +6,22 @@ local theme = require("theme")
 ---- PLUGINS ----
 -----------------
 
--- Plugins (github.com/hitori-chan/hyprland-plugins) load AFTER this config
--- parses (autostart `hyprpm reload -n`) — binds resolve hl.plugin.* lazily;
--- load order lives in hyprpm.toml.
+-- The plugin (github.com/hitori-chan/hyprland-plugins) loads AFTER this
+-- config parses (autostart `hyprpm reload -n`) — binds resolve hl.plugin.*
+-- lazily.
 
 ------------------
 ---- MONITORS ----
 ------------------
 
--- Catch-all for externals.
+-- Catch-all for every output: internal panel and externals alike. A
+-- per-panel rule (mode/scale pin) is machine-specific and stays out of
+-- this portable config.
 hl.monitor({
 	output = "",
 	mode = "preferred",
 	position = "auto",
 	scale = "auto",
-	reserved_area = { top = theme.bar_px },
-})
-
--- Internal panel pinned to scale 1 — auto picks 1.5 and zooms everything.
-hl.monitor({
-	output = "eDP-1",
-	mode = "1920x1200@60",
-	position = "0x0",
-	scale = 1,
 	reserved_area = { top = theme.bar_px },
 })
 
@@ -87,9 +80,9 @@ hl.on("hyprland.start", function()
 	)
 	hl.exec_cmd("systemctl --user start hyprpolkitagent")
 
-	-- before nm-applet: hyprbar is the SNI host, it must exist when the
+	-- before nm-applet: the plugin is the SNI host, it must exist when the
 	-- applet registers. Keep both in one process chain so registration cannot
-	-- race plugin loading.
+	-- race the load.
 	hl.exec_cmd("hyprpm reload -n && exec nm-applet --indicator")
 
 	hl.exec_cmd("hyprpaper")

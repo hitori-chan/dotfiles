@@ -6,8 +6,8 @@
 --   look.lua    borders, colors, the plugins' theme values
 --   binds.lua   every keybinding, awesome-faithful (and the keybind reference)
 --   rules.lua   window / workspace rules
---   (the bar, maximize, snapping, click policy, and placement are native
---    plugins, managed by hyprpm — github.com/hitori-chan/hyprland-plugins)
+--   (the bar, windows, notifications, and system feedback are one native
+--    plugin, managed by hyprpm — github.com/hitori-chan/hyprland-plugins)
 --
 -- Reloads automatically on save; `hyprctl reload` forces it.
 -- For editor autocompletion, point lua-language-server at /usr/share/hypr/stubs.
