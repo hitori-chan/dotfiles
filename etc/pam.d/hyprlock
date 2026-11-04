@@ -1,0 +1,7 @@
+# PAM configuration file for hyprlock
+# the 'login' configuration file (see /etc/pam.d/login)
+
+auth	required								pam_faillock.so	preauth
+auth	[success=1 authtok_err=die default=bad]	pam_unix.so
+auth	[default=die]							pam_faillock.so	authfail
+auth	required								pam_faillock.so	authsucc

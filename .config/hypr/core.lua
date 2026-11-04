@@ -1,153 +1,64 @@
--- core.lua — monitors, environment, autostart, input, and platform behavior.
+-- the M3 laptop (board j514 or j516) or the ThinkPad
+local f = io.open("/sys/firmware/devicetree/base/compatible", "rb")
+local M3 = f and f:read("a"):find("apple,j51[46]")
+if f then
+	f:close()
+end
+local scale = M3 and "1.5" or "1"
 
-local theme = require("theme")
+-- dp3: the M3's panel shows its P3 gamut unconverted
+hl.monitor({ output = "", scale = scale, cm = M3 and "dp3" or nil })
 
------------------
----- PLUGINS ----
------------------
-
--- The plugin (github.com/hitori-chan/hyprland-plugins) loads AFTER this
--- config parses (autostart `hyprpm reload -n`) — binds resolve hl.plugin.*
--- lazily.
-
-------------------
----- MONITORS ----
-------------------
-
--- Catch-all for every output: internal panel and externals alike. A
--- per-panel rule (mode/scale pin) is machine-specific and stays out of
--- this portable config.
-hl.monitor({
-	output = "",
-	mode = "preferred",
-	position = "auto",
-	scale = "auto",
-	reserved_area = { top = theme.bar_px },
-})
-
--------------
----- ENV ----
--------------
-
--- Cursor: the compositor syncs its cursor into gsettings (sync on by
--- default), stomping nwg-look's values — env is the one source.
+-- the compositor writes its cursor into gsettings: env is the one source
 hl.env("XCURSOR_THEME", "phinger-cursors-light")
-hl.env("XCURSOR_SIZE", "32")
-hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
-hl.env("XDG_SESSION_DESKTOP", "Hyprland")
-hl.env("XDG_SESSION_TYPE", "wayland")
-hl.env("QT_QPA_PLATFORM", "wayland;xcb")
--- Qt is themeless outside a DE; gtk3 platform theme = follow GTK's gsettings
+hl.env("XCURSOR_SIZE", M3 and "24" or "32")
 hl.env("QT_QPA_PLATFORMTHEME", "gtk3")
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
-
--- Hyprland owns the fcitx5 environment. Keep GTK_IM_MODULE unset so native
--- GTK3/4 clients use Wayland text-input-v3; XWayland still uses XMODIFIERS.
+-- no GTK_IM_MODULE: native GTK clients use text-input-v3
 hl.env("XMODIFIERS", "@im=fcitx")
 hl.env("QT_IM_MODULE", "fcitx")
 hl.env("SDL_IM_MODULE", "fcitx")
 
--------------------
----- AUTOSTART ----
--------------------
-
 hl.on("hyprland.start", function()
-	-- The portal unit outlives sessions: after a relog the old process spins
-	-- on the dead display at 100% CPU. Import the complete session environment
-	-- before restarting it; one shell preserves the required ordering.
-	local portal_env = table.concat({
-		"DISPLAY",
-		"WAYLAND_DISPLAY",
-		"HYPRLAND_INSTANCE_SIGNATURE",
-		"XDG_CURRENT_DESKTOP",
-		"XDG_SESSION_DESKTOP",
-		"XDG_SESSION_TYPE",
-		"XCURSOR_THEME",
-		"XCURSOR_SIZE",
-		"QT_QPA_PLATFORM",
-		"QT_QPA_PLATFORMTHEME",
-		"QT_WAYLAND_DISABLE_WINDOWDECORATION",
-		"XMODIFIERS",
-		"QT_IM_MODULE",
-		"SDL_IM_MODULE",
-		"PATH",
-		"XDG_DATA_DIRS",
-	}, " ")
-	hl.exec_cmd(
-		"dbus-update-activation-environment --systemd "
-			.. portal_env
-			.. " && systemctl --user restart xdg-desktop-portal-hyprland xdg-desktop-portal"
-	)
+	-- the portal unit outlives sessions and spins on a dead display after a
+	-- relog: import the environment, then restart it, in that order
+	hl.exec_cmd([[dbus-update-activation-environment --systemd \
+		DISPLAY WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP XDG_SESSION_TYPE \
+		XCURSOR_THEME XCURSOR_SIZE XMODIFIERS QT_IM_MODULE SDL_IM_MODULE PATH XDG_DATA_DIRS \
+		QT_QPA_PLATFORMTHEME QT_WAYLAND_DISABLE_WINDOWDECORATION &&
+		systemctl --user restart xdg-desktop-portal-hyprland xdg-desktop-portal]])
 	hl.exec_cmd("systemctl --user start hyprpolkitagent")
-
-	-- before nm-applet: the plugin is the SNI host, it must exist when the
-	-- applet registers. Keep both in one process chain so registration cannot
-	-- race the load.
-	hl.exec_cmd("hyprpm reload -n && exec nm-applet --indicator")
-
+	-- the plugin hosts the tray: it must be loaded before nm-applet registers
+	hl.exec_cmd("hyprpm reload -n; exec nm-applet --indicator")
 	hl.exec_cmd("hyprpaper")
-	hl.exec_cmd("hypridle")
-
+	-- where a finger is enrolled, the lock's mark takes the box's slot
+	hl.exec_cmd([[timeout 5 fprintd-list "$USER" | grep -q '^ - #' && hides=true || hides=false
+		HYPRLOCK_BOX_HIDES=$hides exec hypridle]])
 	hl.exec_cmd("fcitx5 -d")
 end)
 
----------------
----- INPUT ----
----------------
+hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
 
 hl.config({
+	-- the M3's display has no async flips: a torn frame there is a dropped one
+	general = { allow_tearing = not M3 },
 	input = {
-		kb_layout = "us",
-
-		follow_mouse = 1, -- sloppy focus
-		sensitivity = 0,
-
 		repeat_rate = 35,
 		repeat_delay = 300,
-
-		touchpad = {
-			natural_scroll = false,
-			tap_to_click = true,
-			clickfinger_behavior = true, -- 2-finger tap = right click, 3 = middle
-			disable_while_typing = true,
-		},
+		touchpad = { clickfinger_behavior = true },
 	},
-})
-
-hl.gesture({
-	fingers = 3,
-	direction = "horizontal",
-	action = "workspace",
-})
-
---------------
----- MISC ----
---------------
-
-hl.config({
 	misc = {
-		font_family = theme.font,
+		font_family = "Inter",
 		disable_hyprland_logo = true,
 		disable_splash_rendering = true,
-
-		-- honor an app's activation request (raise + focus), as awesome did:
-		-- a tray-icon Activate or a clicked notification tells the source app
-		-- to present itself, and without this the compositor only flags it
-		-- urgent instead of raising it.
-		focus_on_activate = true,
-
-		vrr = 3, -- fullscreen game content only
+		vrr = 3, -- fullscreen games only
 	},
-
-	cursor = {
-		no_warps = true,
-	},
-
-	xwayland = {
-		force_zero_scaling = true, -- no blurry XWayland when a display is scaled
-	},
-
+	cursor = { no_warps = true },
+	xwayland = { force_zero_scaling = true },
 	render = {
-		direct_scanout = 2, -- automatically scan out eligible fullscreen clients
+		direct_scanout = 1, -- 2 (games only) if a fullscreen app glitches
+		-- the color matrix converts scanned-out sRGB on the M3's P3 panel;
+		-- 2 decides before scanout starts and never sets it
+		non_shader_cm = M3 and 1 or nil,
 	},
 })
