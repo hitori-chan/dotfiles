@@ -45,7 +45,6 @@ hl.config({
 	input = {
 		repeat_rate = 35,
 		repeat_delay = 300,
-		touchpad = { clickfinger_behavior = true },
 	},
 	misc = {
 		font_family = "Inter",
@@ -60,5 +59,7 @@ hl.config({
 		-- the color matrix converts scanned-out sRGB on the M3's P3 panel;
 		-- 2 decides before scanout starts and never sets it
 		non_shader_cm = M3 and 1 or nil,
+		-- fullscreen video or the focused window on a plane under the frame (the fork's underlay)
+		underlay = M3 and 2 or nil,
 	},
 })

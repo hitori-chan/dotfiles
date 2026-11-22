@@ -40,3 +40,13 @@ hl.window_rule({
 	match = { content = "game" },
 	immediate = true,
 })
+
+-- browsers at 60 fps on battery (the fork's max_fps and on_battery)
+hl.window_rule({
+	name = "browsers-60-on-battery",
+	match = {
+		class = "firefox.*|org\\.mozilla\\.firefox|librewolf|chromium.*|google-chrome.*|brave-browser.*|vivaldi.*|microsoft-edge.*",
+		on_battery = true,
+	},
+	max_fps = 60,
+})
