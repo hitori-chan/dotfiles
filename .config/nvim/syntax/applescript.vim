@@ -157,7 +157,7 @@ hi def link scptMonth scptConst
 
 " Time
 syn keyword scptTime minutes hours days weeks
-hi def link scptTime scptConstant
+hi def link scptTime scptConst
 
 " --- Conditional ---
 syn keyword scptCond if then else
@@ -211,7 +211,7 @@ syn match   scptUnitUS "\<cubic inches\>"
 syn match   scptUnitUS "\<cubic feet\>"
 syn match   scptUnitUS "\<cubic yards\>"
 syn match   scptUnitUS "\<degrees Fahrenheit\>"
-hi def link scptUnitUS scptKey
+hi def link scptUnitUS scptKeyword
 
 " British Units
 syn keyword scptUnitBT litres centimetres metres kilometres

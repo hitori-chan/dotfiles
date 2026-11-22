@@ -5,6 +5,7 @@ require("conform").setup({
 		lsp_format = "fallback",
 	},
 	formatters_by_ft = {
+		caddy = { "caddy" },
 		css = { "prettier" },
 		html = { "prettier" },
 		javascript = { "prettier" },
@@ -17,6 +18,9 @@ require("conform").setup({
 		typescript = { "prettier" },
 		typescriptreact = { "prettier" },
 		yaml = { "prettier" },
+	},
+	formatters = {
+		caddy = { command = "caddy", args = { "fmt", "-" }, stdin = true },
 	},
 })
 

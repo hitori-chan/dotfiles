@@ -15,6 +15,7 @@ require("nvim-treesitter").install({
 	"bash",
 	"c",
 	"c_sharp",
+	"caddy",
 	"cpp",
 	"css",
 	"go",

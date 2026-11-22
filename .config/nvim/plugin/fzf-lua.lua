@@ -4,9 +4,19 @@ vim.pack.add({
 })
 
 require("nvim-web-devicons").setup()
-require("fzf-lua").setup()
 
-vim.keymap.set("n", "<leader>ff", require("fzf-lua").files, { desc = "Fzf files" })
-vim.keymap.set("n", "<leader>fg", require("fzf-lua").live_grep, { desc = "Fzf live grep" })
-vim.keymap.set("n", "<leader>fb", require("fzf-lua").buffers, { desc = "Fzf buffers" })
-vim.keymap.set("n", "<leader>fh", require("fzf-lua").oldfiles, { desc = "Fzf history" })
+vim.ui.select = function(...)
+	require("fzf-lua").register_ui_select()
+	return vim.ui.select(...)
+end
+
+local function fzf(picker)
+	return function()
+		require("fzf-lua")[picker]()
+	end
+end
+
+vim.keymap.set("n", "<leader>ff", fzf("files"), { desc = "Fzf files" })
+vim.keymap.set("n", "<leader>fg", fzf("live_grep"), { desc = "Fzf live grep" })
+vim.keymap.set("n", "<leader>fb", fzf("buffers"), { desc = "Fzf buffers" })
+vim.keymap.set("n", "<leader>fh", fzf("oldfiles"), { desc = "Fzf history" })

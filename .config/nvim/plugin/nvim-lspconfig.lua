@@ -18,10 +18,8 @@ vim.lsp.enable({
 	"yamlls",
 })
 
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, {
-	desc = "Show diagnostic",
-})
+vim.lsp.linked_editing_range.enable()
 
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {
-	desc = "Diagnostic list",
+vim.keymap.set("n", "<C-w>D", vim.diagnostic.setloclist, {
+	desc = "Diagnostics to location list",
 })

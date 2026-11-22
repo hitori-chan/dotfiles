@@ -10,7 +10,7 @@ require("nvim-web-devicons").setup()
 
 local cmp = require("blink.cmp")
 
-cmp.build():wait(60000)
+cmp.build():pwait(60000)
 cmp.setup({
 	completion = {
 		menu = {
